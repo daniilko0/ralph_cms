@@ -1,0 +1,75 @@
+{% extends 'main/base.html' %}
+{% load fontawesome_5 %}
+
+{% block title %}
+    {{ student.first_name }} {{ student.second_name }} ({{ student.group_num }}/{{ student.subgroup_num }})
+{% endblock %}
+
+{% block content %}
+    <div class="modal fade" id="delete_confirm" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="delete_confirm_title">Распыление студента</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Вы действительно хотите распылить студента? Это необратимое действие!
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Отмена</button>
+              <form action="{% url 'delete_student' group=group student_id=student.user_id %}">
+                  <button type="submit" class="btn btn-danger">{% fa5_icon 'user-times' 'fas' %} Распылить</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-5 mb-5">
+        <h1>{{ student.first_name }} {{ student.second_name }}</h1>
+    </div>
+
+    <div class="container my-2">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item" aria-current="page"><a href="{% url 'index' %}">Группы</a></li>
+              <li class="breadcrumb-item" aria-current="page"><a href="{% url 'group' group=group %}">Группа {{ group }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{ student.first_name }} {{ student.second_name }}</li>
+          </ol>
+        </nav>
+    </div>
+
+    <div class="container">
+        <table class="table">
+            <tr>
+                <td>Фамилия</td>
+                <td>{{ student.second_name }}</td>
+            </tr>
+            <tr>
+                <td>Имя</td>
+                <td>{{ student.first_name }}</td>
+            </tr>
+            <tr>
+                <td>Группа</td>
+                <td>{{ student.group_num }}</td>
+            </tr>
+            <tr>
+                <td>Подгруппа</td>
+                <td>{{ student.subgroup_num }}</td>
+            </tr>
+            <tr>
+                <td>Статус студента</td>
+                <td>{{ acad_status.status_description }}</td>
+            </tr>
+            <tr>
+                <td>Страница ВК</td>
+                <td><a href="{{ vk_link }}">{{ vk_link }}</a></td>
+            </tr>
+
+        </table>
+        <a class="btn btn-primary" href="{% url 'edit_student' group=group student_id=student.user_id %}">{% fa5_icon 'pen' 'fas' %} Уточнить</a>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#delete_confirm">{% fa5_icon 'trash' 'fas' %} Распылить</button>
+    </div>
+{% endblock %}

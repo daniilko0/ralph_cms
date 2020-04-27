@@ -1,0 +1,56 @@
+{% extends 'main/base.html' %}
+
+{% load fontawesome_5 %}
+{% load main_extras %}
+
+{% block title %}Студенты группы {{ group.group_num }}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid my-5">
+        <h1 class="text-center">Список студентов группы №{{ group.group_num }} ({{ group.group_descriptor }})</h1>
+    </div>
+
+    <div class="container my-2">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'index' %}">Группы</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'group' group=group.group_num %}">Группа {{ group.group_num }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Студенты</li>
+          </ol>
+        </nav>
+    </div>
+
+    <div class="container">
+    {% if students %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <tr class="thead-dark">
+                    <th>#</th>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Группа</th>
+                    <th>Подгруппа</th>
+                    <th>Статус</th>
+                    <th></th>
+                </tr>
+                {% for st in students %}
+                    <tr>
+                        <td>{{ st.user_id }}</td>
+                        <td>{{ st.second_name }}</td>
+                        <td>{{ st.first_name }}</td>
+                        <td>{{ st.group_num }}</td>
+                        <td>{{ st.subgroup_num }}</td>
+                        <td>{{ st.academic_status }}</td>
+                        <td>
+                            <a class="btn btn-secondary" href="{% url 'student' group=st.group_num student_id=st.user_id%}">{% fa5_icon 'chevron-right' 'fas' %}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <p>Список студентов пуст</p>
+    {% endif %}
+        <a class="btn btn-primary mb-5" href="{% url 'create_student' group=group.group_num %}">{% fa5_icon 'user-plus' 'fas' %} Добавить студента</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'main/base.html' %}
+{% load fontawesome_5 %}
+
+{% block title %}
+    Группа {{ group.group_num }}
+{% endblock %}
+
+{% block content %}
+    <div class="modal fade" id="delete_confirm" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="delete_confirm_title">Удаление группы</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Вы действительно хотите удалить эту группу? Все студенты этой группы будут распылены.
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Отмена</button>
+              <form action="{% url 'delete_group' group=group.group_num %}">
+                  <button type="submit" class="btn btn-danger">{% fa5_icon 'times' 'fas' %} Удалить</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <h1>Группа {{ group.group_num }}</h1>
+    </div>
+
+    <div class="container my-2">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'index' %}">Группы</a></li>
+              <li class="breadcrumb-item" aria-current="page">Группа {{ group.group_num }}</li>
+          </ol>
+        </nav>
+    </div>
+
+    <div class="container">
+        {% if reg_alert %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Группа создана!</strong> Теперь вам нужно <a class="alert-link" href="#">зарегистрировать</a> администратора для этой группы.<br>Иначе, вы не сможете совершать никаких действий в отношении этой группы
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col">
+                <h5>Разделы</h5>
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-action">
+                        <a href="{% url 'students' group=group.group_num %}">
+                            Список студентов
+                            <span class="badge badge-primary badge-pill">{{ students_count }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+                <h5>Управление</h5>
+                <ul class="list-group">
+                    <button class="list-group-item list-group-item-action list-group-item-danger" data-target="#delete_confirm"
+                            data-toggle="modal">{% fa5_icon 'trash' 'fas' %} Удалить</button>
+                </ul>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
