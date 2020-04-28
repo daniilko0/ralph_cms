@@ -51,6 +51,10 @@
     {% else %}
         <p>Список студентов пуст</p>
     {% endif %}
-        <a class="btn btn-primary mb-5" href="{% url 'create_student' group=group.group_num %}">{% fa5_icon 'user-plus' 'fas' %} Добавить студента</a>
+        {% if request.user|user_can_admin:group.group_num %}
+            <a class="btn btn-primary mb-5" href="{% url 'create_student' group=group.group_num %}">{% fa5_icon 'user-plus' 'fas' %} Добавить студента</a>
+        {% else %}
+            <a class="btn btn-primary mb-5 disabled" href="#">{% fa5_icon 'user-plus' 'fas' %} Добавить студента</a>
+        {% endif %}
     </div>
 {% endblock %}
