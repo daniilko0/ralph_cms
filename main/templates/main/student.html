@@ -35,8 +35,9 @@
     <div class="container my-2">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-              <li class="breadcrumb-item" aria-current="page"><a href="{% url 'index' %}">Группы</a></li>
-              <li class="breadcrumb-item" aria-current="page"><a href="{% url 'group' group=group %}">Группа {{ group }}</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'index' %}">Группы</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'group' group=group %}">Группа {{ group }}</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'students' group=group %}">Студенты</a></li>
               <li class="breadcrumb-item active" aria-current="page">{{ student.first_name }} {{ student.second_name }}</li>
           </ol>
         </nav>
