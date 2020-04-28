@@ -13,6 +13,27 @@
     {% fontawesome_5_static %}
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Ralph CMS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Аккаунт
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <span class="dropdown-item">{% fa5_icon 'user-cog' 'fas' %} {{ user.username }}</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">{% fa5_icon 'sign-out-alt' 'fas' %} Выйти</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
     {% block content %}{% endblock %}
 </body>
 </html>
