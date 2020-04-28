@@ -4,10 +4,15 @@ import requests
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import Group
+from django.contrib.auth.models import Permission
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.http import Http404
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.db.models import Q
 
 from .forms import GroupInfoForm
 from .forms import GroupScheduleForm
@@ -168,12 +173,25 @@ def create_student(request, group):
 
 def group(request, group):
     context = {}
-    if request.GET.get("from") == "create_group":
+    try:
+        perm = Permission.objects.filter(codename=f"admin_{group}")
+    except Permission.DoesNotExist:
+        perm = None
+    if perm in request.user.user_permissions.all():
+        print("can")
+    admins = User.objects.filter(
+        Q(groups__permissions=perm) | Q(user_permissions=perm)
+    ).distinct()
+    if request.GET.get("from") == "create_group" and not admins:
         context["reg_alert"] = True
+    if request.GET.get("from") == "denied_create_admin":
+        context["create_admin_denied"] = True
     group_data = Groups.objects.get(group_num=group)
     students_count = len(UsersInfo.objects.filter(group_num=group))
+
     context["group"] = group_data
     context["students_count"] = students_count
+    # context["user"] = request.user
 
     return render(request, "main/group.html", context)
 
@@ -225,3 +243,31 @@ def delete_group(request, group):
             if user is not None:
                 user.delete()
         return redirect("index")
+
+
+def create_admin(request, group):
+    admin_group = Group.objects.filter(name=f"admins_{group}")
+    if not admin_group:
+        if request.method == "POST":
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get("username")
+                raw_password = form.cleaned_data.get("password1")
+                ct = ContentType.objects.get_for_model(User)
+                permission = Permission.objects.create(
+                    codename=f"admin_{group}",
+                    name=f"Can administrate group {group}",
+                    content_type=ct,
+                )
+                permission.save()
+                user = authenticate(username=username, password=raw_password)
+                user.user_permissions.add(permission)
+                login(request, user)
+                return redirect("group", group=group)
+        else:
+            form = UserCreationForm()
+    else:
+        url = f"{reverse('group', kwargs={'group': group})}?from=denied_create_admin"
+        return redirect(url)
+    return render(request, "main/admin_create.html", {"form": form, "group": group})

@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_filters %}
+{% load fontawesome_5 %}
+
+{% block title %}Создание администратора{% endblock %}
+
+{% block content %}
+    <div class="container mt-5 mb-5">
+        <h1>Создание администратора</h1>
+    </div>
+    <div class="container mt-2 mb-2">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'index' %}">Группы</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'group' group=group %}">Группа {{ group }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Создание администратора</li>
+          </ol>
+        </nav>
+    </div>
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+            <div class="form-group">
+                {{ field | as_crispy_field }}
+            </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">{% fa5_icon 'plus' 'fas' %} Создать</button>
+        </form>
+    </div>
+{% endblock %}

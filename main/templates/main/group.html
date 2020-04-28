@@ -1,6 +1,8 @@
 {% extends 'main/base.html' %}
 {% load fontawesome_5 %}
 
+{% load main_extras %}
+
 {% block title %}
     Группа {{ group.group_num }}
 {% endblock %}
@@ -44,12 +46,21 @@
     <div class="container">
         {% if reg_alert %}
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Группа создана!</strong> Теперь вам нужно <a class="alert-link" href="#">зарегистрировать</a> администратора для этой группы.<br>Иначе, вы не сможете совершать никаких действий в отношении этой группы
+                <strong>Группа создана!</strong> Теперь вам нужно <a class="alert-link" href="{% url 'create_admin' group=group.group_num %}">зарегистрировать</a> администратора для этой группы.<br>Иначе, вы не сможете совершать никаких действий в отношении этой группы
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         {% endif %}
+        {% if create_admin_denied %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Администратор уже назначен!</strong> У каждой группы может быть только один администратор.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+
         <div class="row">
             <div class="col">
                 <h5>Разделы</h5>
@@ -64,10 +75,14 @@
             </div>
             <div class="col">
                 <h5>Управление</h5>
+                {% if request.user|user_can_admin:group.group_num %}
                 <ul class="list-group">
                     <button class="list-group-item list-group-item-action list-group-item-danger" data-target="#delete_confirm"
                             data-toggle="modal">{% fa5_icon 'trash' 'fas' %} Удалить</button>
                 </ul>
+                {% else %}
+                    <p>Нет доступа</p>
+                {% endif %}
             </div>
             <div class="col"></div>
         </div>

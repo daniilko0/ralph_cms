@@ -4,8 +4,6 @@ import requests
 from django.contrib.auth.models import User
 from django.db import models
 
-from ralph_cms import settings
-
 
 class StudentStatus(models.Model):
     status_id = models.IntegerField(primary_key=True)
