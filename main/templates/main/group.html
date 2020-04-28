@@ -51,10 +51,16 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        {% endif %}
-        {% if create_admin_denied %}
+        {% elif create_admin_denied %}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>Администратор уже назначен!</strong> У каждой группы может быть только один администратор.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% elif delete_group_denied %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Нет доступа!</strong> У вас нет прав на удаление этой группы.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

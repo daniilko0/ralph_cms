@@ -174,26 +174,26 @@ def create_student(request, group):
 def group(request, group):
     context = {}
     try:
-        perm = Permission.objects.filter(codename=f"admin_{group}")
+        perm = Permission.objects.get(codename=f"admin_{group}")
     except Permission.DoesNotExist:
-        perm = None
-    if perm in request.user.user_permissions.all():
-        print("can")
-    admins = User.objects.filter(
-        Q(groups__permissions=perm) | Q(user_permissions=perm)
-    ).distinct()
-    if request.GET.get("from") == "create_group" and not admins:
-        context["reg_alert"] = True
-    if request.GET.get("from") == "denied_create_admin":
-        context["create_admin_denied"] = True
-    group_data = Groups.objects.get(group_num=group)
-    students_count = len(UsersInfo.objects.filter(group_num=group))
+        raise Http404()
+    else:
+        admins = User.objects.filter(
+            Q(groups__permissions=perm) | Q(user_permissions=perm)
+        ).distinct()
+        if request.GET.get("from") == "create_group" or not admins:
+            context["reg_alert"] = True
+        if request.GET.get("from") == "denied_create_admin":
+            context["create_admin_denied"] = True
+        if request.GET.get("from") == "denied_delete_group":
+            context["delete_group_denied"] = True
+        group_data = Groups.objects.get(group_num=group)
+        students_count = len(UsersInfo.objects.filter(group_num=group))
 
-    context["group"] = group_data
-    context["students_count"] = students_count
-    # context["user"] = request.user
+        context["group"] = group_data
+        context["students_count"] = students_count
 
-    return render(request, "main/group.html", context)
+        return render(request, "main/group.html", context)
 
 
 def create_group(request):
@@ -216,6 +216,14 @@ def create_group(request):
             )
             new_group_sch.save()
 
+            ct = ContentType.objects.get_for_model(User)
+            permission = Permission.objects.create(
+                codename=f"admin_{request.POST['group_num']}",
+                name=f"Can administrate group {request.POST['group_num']}",
+                content_type=ct,
+            )
+            permission.save()
+
             url = f"{reverse('group', kwargs={'group': new_group.group_num})}?from=create_group"
 
             return redirect(url)
@@ -229,38 +237,50 @@ def create_group(request):
 
 def delete_group(request, group):
     try:
-        group_object = Groups.objects.get(group_num=group)
-        sch = Schedule.objects.get(group_num=group)
-        students = UsersInfo.objects.filter(group_num=group)
-        users = [Users.objects.filter(id=st.user_id) for st in students]
-    except Groups.DoesNotExist:
-        raise Http404("Группа не существует.")
+        perm = Permission.objects.get(codename=f"admin_{group}")
+    except Permission.DoesNotExist:
+        pass
     else:
-        group_object.delete()
-        sch.delete()
-        students.delete()
-        for user in users:
-            if user is not None:
-                user.delete()
-        return redirect("index")
+        if perm in request.user.user_permissions.all():
+            try:
+                group_object = Groups.objects.get(group_num=group)
+                sch = Schedule.objects.get(group_num=group)
+                students = UsersInfo.objects.filter(group_num=group)
+                users = [Users.objects.filter(id=st.user_id) for st in students]
+            except Groups.DoesNotExist:
+                raise Http404("Группа не существует.")
+            else:
+                group_object.delete()
+                sch.delete()
+                students.delete()
+                for user in users:
+                    if user is not None:
+                        user.delete()
+                return redirect("index")
+        else:
+            url = (
+                f"{reverse('group', kwargs={'group': group})}?from=denied_delete_group"
+            )
+            return redirect(url)
 
 
 def create_admin(request, group):
-    admin_group = Group.objects.filter(name=f"admins_{group}")
-    if not admin_group:
+    try:
+        perm = Permission.objects.get(codename=f"admin_{group}")
+    except Permission.DoesNotExist:
+        raise Http404()
+    else:
+        admins = User.objects.filter(
+            Q(groups__permissions=perm) | Q(user_permissions=perm)
+        ).distinct()
+    if not admins:
         if request.method == "POST":
             form = UserCreationForm(request.POST)
             if form.is_valid():
                 form.save()
                 username = form.cleaned_data.get("username")
                 raw_password = form.cleaned_data.get("password1")
-                ct = ContentType.objects.get_for_model(User)
-                permission = Permission.objects.create(
-                    codename=f"admin_{group}",
-                    name=f"Can administrate group {group}",
-                    content_type=ct,
-                )
-                permission.save()
+                permission = Permission.objects.get(codename=f"admin_{group}")
                 user = authenticate(username=username, password=raw_password)
                 user.user_permissions.add(permission)
                 login(request, user)
