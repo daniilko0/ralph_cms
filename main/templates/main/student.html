@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% load fontawesome_5 %}
+{% load main_extras %}
 
 {% block title %}
     {{ student.first_name }} {{ student.second_name }} ({{ student.group_num }}/{{ student.subgroup_num }})
@@ -69,7 +70,12 @@
             </tr>
 
         </table>
-        <a class="btn btn-primary" href="{% url 'edit_student' group=group student_id=student.user_id %}">{% fa5_icon 'pen' 'fas' %} Уточнить</a>
-        <button class="btn btn-danger" data-toggle="modal" data-target="#delete_confirm">{% fa5_icon 'trash' 'fas' %} Распылить</button>
+        {% if request.user|user_can_admin:group.group_num %}
+            <a class="btn btn-primary" href="{% url 'edit_student' group=group student_id=student.user_id %}">{% fa5_icon 'pen' 'fas' %} Уточнить</a>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#delete_confirm">{% fa5_icon 'trash' 'fas' %} Распылить</button>
+        {% else %}
+            <a class="btn btn-primary disabled" href="#">{% fa5_icon 'pen' 'fas' %} Уточнить</a>
+            <button class="btn btn-danger disabled">{% fa5_icon 'trash' 'fas' %} Распылить</button>
+        {% endif %}
     </div>
 {% endblock %}
