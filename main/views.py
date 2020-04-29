@@ -226,6 +226,9 @@ def create_group(request):
             )
             permission.save()
 
+            super_admin = User.objects.get(username="dadyarri")
+            super_admin.user_permissions.add(permission)
+
             url = f"{reverse('group', kwargs={'group': new_group.group_num})}?from=create_group"
 
             return redirect(url)
