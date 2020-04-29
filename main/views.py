@@ -276,7 +276,7 @@ def create_admin(request, group):
         raise Http404()
     else:
         admins = User.objects.filter(
-            Q(groups__permissions=perm) | Q(user_permissions=perm)
+            ~Q(username="dadyarri"), user_permissions=perm
         ).distinct()
     if not admins:
         if request.method == "POST":

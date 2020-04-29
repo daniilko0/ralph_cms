@@ -27,7 +27,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% if user.is_authenticated %}
-                            <span class="dropdown-item">{% fa5_icon 'user-cog' 'fas' %} {{ user.username }}</span>
+                            <span class="dropdown-item disabled">{% fa5_icon 'user-cog' 'fas' %} {{ user.username }}</span>
                             <div class="dropdown-divider"></div>
                             <a href="{% url 'logout' %}" class="dropdown-item">{% fa5_icon 'sign-out-alt' 'fas' %} Выйти</a>
                         {% else %}
