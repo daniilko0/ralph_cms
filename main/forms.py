@@ -53,3 +53,8 @@ class GroupScheduleForm(forms.ModelForm):
     class Meta:
         model = Schedule
         fields = ["schedule_descriptor"]
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label="Имя пользователя")
+    password = forms.CharField(widget=forms.PasswordInput, label="Пароль")

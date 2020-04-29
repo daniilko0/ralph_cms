@@ -1,9 +1,11 @@
 from django.urls import path
-
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("login", views.user_login, name="login"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("<int:group>", views.group, name="group"),
     path("groups/create", views.create_group, name="create_group"),
     path("groups/<int:group>/delete", views.delete_group, name="delete_group"),

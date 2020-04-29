@@ -26,9 +26,14 @@
                         Аккаунт
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <span class="dropdown-item">{% fa5_icon 'user-cog' 'fas' %} {{ user.username }}</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">{% fa5_icon 'sign-out-alt' 'fas' %} Выйти</a>
+                        {% if user.is_authenticated %}
+                            <span class="dropdown-item">{% fa5_icon 'user-cog' 'fas' %} {{ user.username }}</span>
+                            <div class="dropdown-divider"></div>
+                            <a href="{% url 'logout' %}" class="dropdown-item">{% fa5_icon 'sign-out-alt' 'fas' %} Выйти</a>
+                        {% else %}
+                            <span class="dropdown-item">{% fa5_icon 'user-cog' 'fas' %} Не авторизован</span>
+                            <a href="{% url 'login' %}" class="dropdown-item">{% fa5_icon 'sign-in-alt' 'fas' %} Войти</a>
+                        {% endif %}
                     </div>
                 </li>
             </ul>

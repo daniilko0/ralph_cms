@@ -1,0 +1,38 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+     <div class="container my-5">
+        <h1>Вход</h1>
+     </div>
+    <div class="container">
+        {% if disabled_account %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Аккаунт был отключен!</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% elif wrong_credentials %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Неверные данные для входа</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+     <div class="container">
+        <form method="post">
+	    {% csrf_token %}
+            {% for field in form.visible_fields %}
+                <div class="form-group">
+                    {{field | as_crispy_field}}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Вход</button>
+        </form>
+     </div>
+{% endblock %}

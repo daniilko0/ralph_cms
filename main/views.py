@@ -4,18 +4,19 @@ import requests
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.contrib.auth import logout
 from django.urls import reverse
-from django.db.models import Q
 
 from .forms import GroupInfoForm
 from .forms import GroupScheduleForm
+from .forms import LoginForm
 from .forms import StudentForm
 from .forms import VkForm
 from .models import Groups
@@ -27,6 +28,8 @@ from .models import UsersInfo
 
 def index(request):
     context = {"groups": Groups.objects.all()}
+    if request.GET.get("from") == "success_login":
+        context["success_login"] = True
     return render(request, "main/index.html", context)
 
 
@@ -176,7 +179,7 @@ def group(request, group):
     try:
         perm = Permission.objects.get(codename=f"admin_{group}")
     except Permission.DoesNotExist:
-        raise Http404()
+        raise Http404("Permission does not exist")
     else:
         admins = User.objects.filter(
             Q(groups__permissions=perm) | Q(user_permissions=perm)
@@ -291,3 +294,31 @@ def create_admin(request, group):
         url = f"{reverse('group', kwargs={'group': group})}?from=denied_create_admin"
         return redirect(url)
     return render(request, "main/admin_create.html", {"form": form, "group": group})
+
+
+def user_login(request):
+    context = {}
+    if request.GET.get("from") == "disabled_account":
+        context["disabled_account"] = True
+    if request.GET.get("from") == "wrong_credentials":
+        context["wrong_credentials"] = True
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(username=cd["username"], password=cd["password"])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    url = f"{reverse('index')}?from=success_login"
+                    return redirect(url)
+                else:
+                    url = f"{reverse('login')}?from=disabled_account"
+                    return redirect(url)
+            else:
+                url = f"{reverse('login')}?from=wrong_credentials"
+                return redirect(url)
+    else:
+        form = LoginForm()
+    context["form"] = form
+    return render(request, "registration/login.html", context)
