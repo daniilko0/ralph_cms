@@ -21,11 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "*hucul-hsn5*^%ixvy=t)7-30&^2y9yur@^p&%m89^u6xqra#k"
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = bool(os.environ.get("DJANGO_DEBUG", True))
 ALLOWED_HOSTS = ["127.0.0.1"]
 
 
@@ -51,6 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "ralph_cms.urls"
@@ -113,8 +113,12 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 # Applications configs
-
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
+# Redirects
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+# Security
+SECURE_SSL_REDIRECT = os.environ.get("SSL_REDIRECT", False)
+CSRF_COOKIE_SECURE = True
