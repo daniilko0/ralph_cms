@@ -11,7 +11,6 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.contrib.auth import logout
 from django.urls import reverse
 
 from .forms import GroupInfoForm
