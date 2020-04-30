@@ -3,6 +3,7 @@ import os
 import requests
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
+from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Permission
 from django.contrib.auth.models import User
@@ -261,6 +262,7 @@ def delete_group(request, group):
                 for user in users:
                     if user is not None:
                         user.delete()
+                logout(request)
                 return redirect("index")
         else:
             url = (
