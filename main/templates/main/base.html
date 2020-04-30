@@ -33,7 +33,7 @@
                             <div class="dropdown-divider"></div>
                             <a href="{% url 'logout' %}" class="dropdown-item">{% fa5_icon 'sign-out' 'fal' %} Выйти</a>
                         {% else %}
-                            <span class="dropdown-item">{% fa5_icon 'user-crown' 'fal' %} Не авторизован</span>
+                            <span class="dropdown-item disabled">{% fa5_icon 'user-crown' 'fal' %} Не авторизован</span>
                             <a href="{% url 'login' %}" class="dropdown-item">{% fa5_icon 'sign-out' 'fal' %} Войти</a>
                         {% endif %}
                     </div>
