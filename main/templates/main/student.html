@@ -71,7 +71,7 @@
             </tr>
 
         </table>
-        {% if request.user|user_can_admin:group.group_num %}
+        {% if request.user|user_can_admin:group %}
             <a class="btn btn-primary" href="{% url 'edit_student' group=group student_id=student.user_id %}">{% fa5_icon 'pen' 'fas' %} Уточнить</a>
             <button class="btn btn-danger" data-toggle="modal" data-target="#delete_confirm">{% fa5_icon 'trash' 'fas' %} Распылить</button>
         {% else %}
