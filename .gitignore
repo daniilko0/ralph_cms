@@ -145,5 +145,3 @@ cython_debug/
 **/migrations
 
 .envrc
-
-/static
