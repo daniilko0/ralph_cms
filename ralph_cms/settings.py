@@ -25,7 +25,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DJANGO_DEBUG", True))
-ALLOWED_HOSTS = ["127.0.0.1", "ralph-cms.herokuapp.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "ralph-cms.herokuapp.com", ".ngrok.io"]
 
 
 # Application definition
