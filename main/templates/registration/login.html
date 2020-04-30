@@ -1,5 +1,6 @@
 {% extends "main/base.html" %}
 {% load crispy_forms_filters %}
+{% load fontawesome_5 %}
 
 {% block title %}Вход{% endblock %}
 
@@ -32,7 +33,7 @@
                     {{field | as_crispy_field}}
                 </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">Вход</button>
+            <button type="submit" class="btn btn-primary">{% fa5_icon 'sign-in' 'fal' %} Вход</button>
         </form>
      </div>
 {% endblock %}

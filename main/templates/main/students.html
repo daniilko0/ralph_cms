@@ -42,7 +42,7 @@
                         <td>{{ st.subgroup_num }}</td>
                         <td>{{ st.academic_status }}</td>
                         <td>
-                            <a class="btn btn-secondary" href="{% url 'student' group=st.group_num student_id=st.user_id%}">{% fa5_icon 'chevron-right' 'fas' %}</a>
+                            <a class="btn btn-secondary" href="{% url 'student' group=st.group_num student_id=st.user_id%}">{% fa5_icon 'chevron-right' 'fal' %}</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -52,9 +52,9 @@
         <p>Список студентов пуст</p>
     {% endif %}
         {% if request.user|user_can_admin:group.group_num %}
-            <a class="btn btn-primary mb-5" href="{% url 'create_student' group=group.group_num %}">{% fa5_icon 'user-plus' 'fas' %} Добавить студента</a>
+            <a class="btn btn-primary mb-5" href="{% url 'create_student' group=group.group_num %}">{% fa5_icon 'user-plus' 'fal' %} Добавить студента</a>
         {% else %}
-            <a class="btn btn-primary mb-5 disabled" href="#">{% fa5_icon 'user-plus' 'fas' %} Добавить студента</a>
+            <a class="btn btn-primary mb-5 disabled" href="#">{% fa5_icon 'user-plus' 'fal' %} Добавить студента</a>
         {% endif %}
     </div>
 {% endblock %}

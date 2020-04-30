@@ -1,3 +1,4 @@
+{% load static %}
 {% load fontawesome_5 %}
 
 <!DOCTYPE html>
@@ -6,11 +7,12 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    {% fontawesome_5_static %}
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
+    <script src="{% static 'jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'icons/css/all.min.css' %}">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -27,12 +29,12 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% if user.is_authenticated %}
-                            <span class="dropdown-item disabled">{% fa5_icon 'user-cog' 'fas' %} {{ user.username }}</span>
+                            <span class="dropdown-item disabled">{% fa5_icon 'user-crown' 'fal' %} {{ user.username }}</span>
                             <div class="dropdown-divider"></div>
-                            <a href="{% url 'logout' %}" class="dropdown-item">{% fa5_icon 'sign-out-alt' 'fas' %} Выйти</a>
+                            <a href="{% url 'logout' %}" class="dropdown-item">{% fa5_icon 'sign-out' 'fal' %} Выйти</a>
                         {% else %}
-                            <span class="dropdown-item">{% fa5_icon 'user-cog' 'fas' %} Не авторизован</span>
-                            <a href="{% url 'login' %}" class="dropdown-item">{% fa5_icon 'sign-in-alt' 'fas' %} Войти</a>
+                            <span class="dropdown-item">{% fa5_icon 'user-crown' 'fal' %} Не авторизован</span>
+                            <a href="{% url 'login' %}" class="dropdown-item">{% fa5_icon 'sign-out' 'fal' %} Войти</a>
                         {% endif %}
                     </div>
                 </li>

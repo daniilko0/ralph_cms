@@ -35,10 +35,10 @@
                     <tr>
                         <td>{{ group.group_num }}</td>
                         <td>{{ group.group_descriptor }}</td>
-                        <td><a href="{% url 'group' group=group.group_num %}" class="btn btn-secondary">{% fa5_icon 'chevron-right' 'fas' %}</a></td>
+                        <td><a href="{% url 'group' group=group.group_num %}" class="btn btn-secondary">{% fa5_icon 'chevron-right' 'fal' %}</a></td>
                     </tr>
             {% endfor %}
     </table>
-        <a href="{% url 'create_group' %}" class="btn btn-primary">{% fa5_icon 'user-friends' 'fas' %} Добавить группу</a>
+        <a href="{% url 'create_group' %}" class="btn btn-primary">{% fa5_icon 'users-medical' 'fal' %} Добавить группу</a>
     </div>
 {% endblock %}

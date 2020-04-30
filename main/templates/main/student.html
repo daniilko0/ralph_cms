@@ -22,7 +22,7 @@
           <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Отмена</button>
               <form action="{% url 'delete_student' group=group student_id=student.user_id %}">
-                  <button type="submit" class="btn btn-danger">{% fa5_icon 'user-times' 'fas' %} Распылить</button>
+                  <button type="submit" class="btn btn-danger">{% fa5_icon 'user-slash' 'fal' %} Распылить</button>
               </form>
           </div>
         </div>
@@ -72,11 +72,11 @@
 
         </table>
         {% if request.user|user_can_admin:group %}
-            <a class="btn btn-primary" href="{% url 'edit_student' group=group student_id=student.user_id %}">{% fa5_icon 'pen' 'fas' %} Уточнить</a>
-            <button class="btn btn-danger" data-toggle="modal" data-target="#delete_confirm">{% fa5_icon 'trash' 'fas' %} Распылить</button>
+            <a class="btn btn-primary" href="{% url 'edit_student' group=group student_id=student.user_id %}">{% fa5_icon 'pen' 'fal' %} Уточнить</a>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#delete_confirm">{% fa5_icon 'user-slash' 'fal' %} Распылить</button>
         {% else %}
-            <a class="btn btn-primary disabled" href="#">{% fa5_icon 'pen' 'fas' %} Уточнить</a>
-            <button class="btn btn-danger disabled">{% fa5_icon 'trash' 'fas' %} Распылить</button>
+            <a class="btn btn-primary disabled" href="#">{% fa5_icon 'pen' 'fal' %} Уточнить</a>
+            <button class="btn btn-danger disabled">{% fa5_icon 'user-slash' 'fal' %} Распылить</button>
         {% endif %}
     </div>
 {% endblock %}

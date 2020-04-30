@@ -23,7 +23,7 @@
           <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Отмена</button>
               <form action="{% url 'delete_group' group=group.group_num %}">
-                  <button type="submit" class="btn btn-danger">{% fa5_icon 'times' 'fas' %} Удалить</button>
+                  <button type="submit" class="btn btn-danger">{% fa5_icon 'users-slash' 'fal' %} Удалить</button>
               </form>
           </div>
         </div>
@@ -73,7 +73,7 @@
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-action">
                         <a href="{% url 'students' group=group.group_num %}">
-                            Список студентов
+                            {% fa5_icon 'users' 'fal' %} Список студентов
                             <span class="badge badge-primary badge-pill">{{ students_count }}</span>
                         </a>
                     </li>
@@ -84,7 +84,7 @@
                 {% if request.user|user_can_admin:group.group_num %}
                 <ul class="list-group">
                     <button class="list-group-item list-group-item-action list-group-item-danger" data-target="#delete_confirm"
-                            data-toggle="modal">{% fa5_icon 'trash' 'fas' %} Удалить</button>
+                            data-toggle="modal">{% fa5_icon 'users-slash' 'fal' %} Удалить</button>
                 </ul>
                 {% else %}
                     <p>Нет доступа</p>
