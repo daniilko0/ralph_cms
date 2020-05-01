@@ -121,6 +121,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Applications configs
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+SESAME_ONE_TIME = True
+SESAME_MAX_AGE = 300
 
 # Redirects
 LOGIN_REDIRECT_URL = "/"
