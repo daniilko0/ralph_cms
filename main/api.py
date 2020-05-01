@@ -26,7 +26,7 @@ class AuthLinkView(APIView):
             return Response(
                 {"result": {"code": 400, "description": "[400] User doesn't exist",}}
             )
-        link_data = utils.get_parameters(user)
+        link_data = utils.get_query_string(user)
         return Response(
             {"result": {"code": 200, "description": "[200] OK", "link": link_data}}
         )
