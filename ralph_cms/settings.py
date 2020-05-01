@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "main.apps.MainConfig",
     "fontawesome_5",
     "crispy_forms",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
