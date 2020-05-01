@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from . import api
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -23,4 +24,5 @@ urlpatterns = [
     ),
     path("<int:group>/students/create", views.create_student, name="create_student"),
     path("<int:group>/admin/create", views.create_admin, name="create_admin"),
+    path("api/auth/<int:group>", api.AuthLinkView.as_view(), name="get_auth_link"),
 ]
