@@ -52,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "sesame.middleware.AuthenticationMiddleware",
 ]
 
 ROOT_URLCONF = "ralph_cms.urls"
@@ -92,6 +93,8 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
+
+AUTHENTICATION_BACKENDS = ["sesame.backends.ModelBackend"]
 
 
 # Internationalization
