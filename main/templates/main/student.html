@@ -74,6 +74,11 @@
         {% if request.user|user_can_admin:group %}
             <a class="btn btn-primary" href="{% url 'edit_student' group=group student_id=student.user_id %}">{% fa5_icon 'pen' 'fal' %} Уточнить</a>
             <button class="btn btn-danger" data-toggle="modal" data-target="#delete_confirm">{% fa5_icon 'user-slash' 'fal' %} Распылить</button>
+            {% if is_admin %}
+                <a class="btn btn-secondary" href="{% url 'demoralize_admin' group=group student_id=student.user_id %}">{% fa5_icon 'user-crown' 'far' %} Разжаловать из администраторов</a>
+            {% else %}
+                <a class="btn btn-secondary" href="{% url 'appoint_admin' group=group student_id=student.user_id %}">{% fa5_icon 'user-crown' 'far' %} Назначить администратором</a>
+            {% endif %}
         {% else %}
             <a class="btn btn-primary disabled" href="#">{% fa5_icon 'pen' 'fal' %} Уточнить</a>
             <button class="btn btn-danger disabled">{% fa5_icon 'user-slash' 'fal' %} Распылить</button>

@@ -24,6 +24,7 @@ from .models import Schedule
 from .models import StudentStatus
 from .models import Users
 from .models import UsersInfo
+from .models import Administrators
 
 
 def index(request):
@@ -53,11 +54,13 @@ def student(request, group, student_id):
     student = UsersInfo.objects.get(user_id=student_id)
     try:
         user = Users.objects.get(id=student_id)
+        admin = Administrators.objects.filter(vk_id=user.vk_id, group_num=group)
+        print(f"{admin=}")
     except Users.DoesNotExist:
         pass
     else:
         context["vk_link"] = f"https://vk.com/id{user.vk_id}"
-
+        context["is_admin"] = bool(admin)
     acad_status = StudentStatus.objects.get(status_id=student.academic_status.status_id)
     context["group"] = group
     context["student"] = student
@@ -172,6 +175,22 @@ def create_student(request, group):
     context["group"] = group
 
     return render(request, "main/student_create.html", context)
+
+
+def appoint_admin(request, group, student_id):
+    user = Users.objects.get(id=student_id)
+    group_data = Groups.objects.get(group_num=group)
+    admin = Administrators.objects.create(group_num=group_data, vk_id=user.vk_id)
+    admin.save()
+    return redirect("student", student_id=student_id, group=group)
+
+
+def demoralize_admin(request, group, student_id):
+    user = Users.objects.get(id=student_id)
+    group_data = Groups.objects.get(group_num=group)
+    admin = Administrators.objects.get(group_num=group_data, vk_id=user.vk_id)
+    admin.delete()
+    return redirect("student", student_id=student_id, group=group)
 
 
 def group(request, group):

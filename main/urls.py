@@ -22,6 +22,16 @@ urlpatterns = [
         views.delete_student,
         name="delete_student",
     ),
+    path(
+        "<int:group>/student/<int:student_id>/appoint",
+        views.appoint_admin,
+        name="appoint_admin",
+    ),
+    path(
+        "<int:group>/student/<int:student_id>/demoralize",
+        views.demoralize_admin,
+        name="demoralize_admin",
+    ),
     path("<int:group>/students/create", views.create_student, name="create_student"),
     path("<int:group>/admin/create", views.create_admin, name="create_admin"),
     path("api/auth/<int:group>", api.AuthLinkView.as_view(), name="get_auth_link"),
